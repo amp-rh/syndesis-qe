@@ -55,6 +55,7 @@ public class UpgradeSteps {
     @When("^prepare upgrade$")
     public void getUpgradeVersions() {
         Syndesis syndesis = ResourceFactory.get(PreviousSyndesis.class);
+        syndesis.defaultValues();
         // If it is a prod build, we can use released images from registry.redhat.io
         if (TestUtils.isProdBuild()) {
             // If it is a prod build and the version is null, it means it was started by test-runner, so skip it as for prod upgrade there is a
@@ -101,6 +102,9 @@ public class UpgradeSteps {
         log.info("Upgrade properties:");
         log.info("  Previous version: " + TestConfiguration.upgradePreviousVersion());
         log.info("  Current version:  " + TestConfiguration.upgradeCurrentVersion());
+
+        //temporary fix fox 1.12.x
+        OpenShiftUtils.binary().execute("delete", "crd", "syndesises.syndesis.io");
     }
 
     @When("^perform syndesis upgrade to newer version using operator$")
