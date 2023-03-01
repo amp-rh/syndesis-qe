@@ -1,0 +1,7 @@
+FROM alpine/git as gitRepoSyndesis
+
+ARG SYNDESIS_BRANCH_OWNER=syndesisio
+ARG SYNDESIS_BRANCH_VERSION=1.14.x
+ARG INSTALL_TAG=1.14
+
+RUN git clone -b ${SYNDESIS_BRANCH_VERSION} https://github.com/${SYNDESIS_BRANCH_OWNER}/syndesis.git /syndesis
