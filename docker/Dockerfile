@@ -103,7 +103,9 @@ RUN apt update -y \
 	&& tar -xvf /tmp/oc.tar.gz oc \
 	&& mv oc /usr/local/bin \
 	&& rm -f /tmp/oc.tar.gz \
-	&& chown -R seluser:seluser /home/seluser
+	&& chown -R seluser:seluser /home/seluser \
+    && chgrp -R 0 /home/seluser  \
+    && chmod -R g+rwX /home/seluser
 
 # the root cannot be used, the webdriver would fail after start
 USER seluser

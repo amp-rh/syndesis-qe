@@ -51,7 +51,7 @@ if [ -n "${UI_URL}" ]; then
         from the local machine where it is running!"
   echo "UI_URL: ${UI_URL}"
   echo "====== /etc/hosts: ${UI_IP} ======"
-  sudo cat /etc/hosts
+   cat /etc/hosts
   echo "=================================="
 else
     echo "The Syndesis UI URL was not specified. The test suite suppose that the Syndesis UI URL is in default format (when the user doesn't specify URL during the Syndesis install, e.g. https://syndesis-<namespace>.apps.<cluster>). The OAuth tests will not work!"
@@ -114,7 +114,7 @@ if [ "${MODE,,}" = "full" ]; then
 	oc new-project ${NAMESPACE}
 	oc login  --insecure-skip-tls-verify=true -u "${ADMIN_USERNAME}" -p "${ADMIN_PASSWORD}" "${URL}"
 	oc project ${NAMESPACE}
-	
+
 	cat <<EOF >> ./test.properties
 syndesis.config.install.operatorhub=true
 syndesis.config.operatorhub.catalogsource=${CATALOG_SOURCE}
@@ -135,10 +135,10 @@ while [ ${CURRENT_RETRIES} -lt ${RETRIES} ]; do
 	(( CURRENT_RETRIES++ ))
 done
 
-[ -d "/test-run-results" ] && sudo rm -rf /test-run-results/* || sudo mkdir /test-run-results
+[ -d "/test-run-results" ] &&  rm -rf /test-run-results/* ||  mkdir /test-run-results
 
-while read -r FILE; do sudo mkdir -p /test-run-results/"$(dirname "$FILE")"; sudo cp "$FILE" /test-run-results/"$(dirname "$FILE")"; done <<< "$(find * -type f -name "*.log")"
-while read -r DIR; do sudo mkdir -p /test-run-results/"$DIR"; sudo cp -r "$DIR"/* /test-run-results/"$DIR"; done <<< "$(find * -maxdepth 2 -type d -wholename "*target/cucumber*")"
+while read -r FILE; do  mkdir -p /test-run-results/"$(dirname "$FILE")";  cp "$FILE" /test-run-results/"$(dirname "$FILE")"; done <<< "$(find * -type f -name "*.log")"
+while read -r DIR; do  mkdir -p /test-run-results/"$DIR";  cp -r "$DIR"/* /test-run-results/"$DIR"; done <<< "$(find * -maxdepth 2 -type d -wholename "*target/cucumber*")"
 
 [ -z "${HAS_FAILURES}" ] && exit 0 || exit 1
 
